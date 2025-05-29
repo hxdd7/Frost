@@ -1,0 +1,27 @@
+<Page
+    x:Class="Frost.DialogContents.AddPluginDialogContent"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <StackPanel Spacing="20">
+        <TextBox x:Name="NameInput" PlaceholderText="Plugin Name" Text="{Binding PluginName}" />
+        <TextBox x:Name="DeveloperInput" PlaceholderText="Developer" Text="{Binding Developer}" />
+        <TextBox x:Name="IconImgInput" PlaceholderText="Icon Image URL" Text="{Binding IconUrl}" />
+
+        <Grid ColumnSpacing="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Remove the duplicate TextBox with x:Name="ExePathTextBox" -->
+            <TextBox x:Name="ExePathTextBox" PlaceholderText="Executable Path" Text="{Binding ExePath}" HorizontalAlignment="Stretch" />
+
+            <Button Click="BrowseExePath_Click"
+                    Grid.Column="1" 
+                    HorizontalAlignment="Left" >
+                <SymbolIcon Symbol="Folder"/>
+            </Button>
+        </Grid>
+    </StackPanel>
+</Page>

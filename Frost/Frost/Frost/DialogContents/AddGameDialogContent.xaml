@@ -1,0 +1,28 @@
+<Page
+    x:Class="Frost.DialogContents.AddGameDialogContent"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <StackPanel Spacing="20">
+        <TextBox x:Name="NameInput" PlaceholderText="Game Name" />
+        <TextBox x:Name="CompanyInput" PlaceholderText="Company" />
+        <TextBox x:Name="BackgroundImgInput" PlaceholderText="Background Image URL" />
+        <TextBox x:Name="CoverImgInput" PlaceholderText="Cover Image URL" />
+        <TextBox x:Name="IconImgInput" PlaceholderText="Icon URL" />
+        <TextBox x:Name="TagsInput" PlaceholderText="Tags (comma separated)" />
+
+        <Grid ColumnSpacing="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="ExePathTextBox" x:FieldModifier="public" PlaceholderText="Executable Path" HorizontalAlignment="Stretch" />
+            <Button Click="BrowseExePath_Click"
+                    Grid.Column="1" 
+                    HorizontalAlignment="Left" >
+                <SymbolIcon Symbol="Folder"/>
+            </Button>
+        </Grid>
+    </StackPanel>
+</Page>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="Frost.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Frost"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Frost">
+
+    <Window.SystemBackdrop>
+        <MicaBackdrop />
+    </Window.SystemBackdrop>
+
+    <Grid x:Name="RootGrid">
+        <Grid.Resources>
+            <DataTemplate x:Key="GameNavItemTemplate">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Spacing="8" ToolTipService.ToolTip="{Binding Name}">
+                    <!-- Image inside a Border with CornerRadius -->
+                    <Border Width="16" Height="16" CornerRadius="3" Background="Transparent">
+                        <Image Source="{Binding CoverImgUrl}"
+                       Width="16" Height="16"
+                       Stretch="UniformToFill"/>
+                    </Border>
+
+                    <!-- TextBlock aligned properly -->
+                    <TextBlock Text="{Binding Name}" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Left"
+                       Margin="10,0,0,0"/>
+                </StackPanel>
+            </DataTemplate>
+        </Grid.Resources>
+        
+        <Border x:Name="AppTitleBar" VerticalAlignment="Top" Background="Transparent">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Image Width="21" Height="20" Source="ms-appx:///Assets/Frost.png" Margin="13,10,11,11"/>
+                <TextBlock x:Name="AppTitle" Text="Frost" VerticalAlignment="Top" Margin="0,12,0,0" FontSize="12"/>
+            </StackPanel>
+        </Border>
+
+        <ContentDialog
+            x:Name="LaunchGameConfirmationDialog"
+            Title="Launch Game?"
+            PrimaryButtonText="Launch"
+            CloseButtonText="Cancel"
+            DefaultButton="Primary"
+            >
+            <ContentDialog.Content>
+                <StackPanel>
+                    <TextBlock Text="Do you want to launch this game?" Margin="0,0,0,10"/>
+                    <TextBlock x:Name="GameNameText" FontWeight="SemiBold"/>
+                </StackPanel>
+            </ContentDialog.Content>
+        </ContentDialog>
+
+        <NavigationView x:Name="nvSample"
+            IsSettingsVisible="True"
+            IsBackButtonVisible="Collapsed"
+            IsBackEnabled="False"
+            IsPaneToggleButtonVisible="False"
+            SelectionChanged="NavigationView_SelectionChanged"
+            RightTapped="NavigationView_RightTapped"
+            ItemInvoked="NavigationView_ItemInvoked" 
+            AlwaysShowHeader="False"
+            PaneTitle=""
+            PaneDisplayMode="Left"
+            ExpandedModeThresholdWidth="500"
+            SelectionFollowsFocus="Disabled"
+            IsTabStop="False"
+            Margin="0,40,0,0">
+
+            <NavigationView.Resources>
+                <MenuFlyout x:Key="PinnedGameContextMenu">
+                    <MenuFlyoutItem Text="Launch" Click="LaunchPinnedGame_Click" DataContext="{Binding Tag}"/>
+                    <MenuFlyoutItem Text="Unpin" Click="UnpinPinnedGame_Click" DataContext="{Binding Tag}"/>
+                </MenuFlyout>
+            </NavigationView.Resources>
+
+            <NavigationView.MenuItems>
+                <!-- Static navigation items -->
+                <NavigationViewItem Content="Home" Tag="HomePage" x:Name="HomePage" ToolTipService.ToolTip="Home">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE80F;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+                <NavigationViewItem Content="Library" Tag="GamePage" x:Name="GamePage" ToolTipService.ToolTip="Library">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE8F1;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+                <NavigationViewItem Content="Third Party Apps" Tag="PluginsPage" x:Name="PluginsPage" ToolTipService.ToolTip="Third Party Apps">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xECAA;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+                <NavigationViewItem Content="Tracking" Tag="TrackingPage" x:Name="TrackingPage" ToolTipService.ToolTip="Tracking">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xEB05;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+                <NavigationViewItemHeader x:Name="PinnedGamesHeader" Content="Games" />
+            </NavigationView.MenuItems>
+
+            <NavigationView.AutoSuggestBox>
+                <AutoSuggestBox x:Name="GameSearchBox"
+                    QueryIcon="Find"
+                    AutomationProperties.Name="Search"
+                    TextChanged="GameSearchBox_TextChanged"
+                    QuerySubmitted="GameSearchBox_QuerySubmitted"
+                    SuggestionChosen="GameSearchBox_SuggestionChosen"
+                    ToolTipService.ToolTip="Search Games"
+                    PlaceholderText="Search Games"/>
+            </NavigationView.AutoSuggestBox>
+
+            <Frame x:Name="contentFrame" />
+        </NavigationView>
+        <ContentDialog
+    x:Name="ScreenshotNotificationDialog"
+    Title="Screenshot"
+    CloseButtonText="OK"
+    DefaultButton="Close">
+            <StackPanel>
+                <TextBlock x:Name="ScreenshotStatusText" />
+            </StackPanel>
+        </ContentDialog>
+    </Grid>
+</Window>

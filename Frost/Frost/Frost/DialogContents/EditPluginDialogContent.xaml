@@ -1,0 +1,26 @@
+<Page
+    x:Class="Frost.DialogContents.EditPluginDialogContent"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <StackPanel Spacing="20">
+        <TextBox x:Name="NameInput" PlaceholderText="Plugin Name" />
+        <TextBox x:Name="DeveloperInput" PlaceholderText="Developer" />
+        <TextBox x:Name="IconImgInput" PlaceholderText="Icon Image URL" />
+        <TextBox x:Name="ExePathInput" PlaceholderText="Executable Path" />
+
+        <Grid ColumnSpacing="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="ExePathTextBox" x:FieldModifier="public" PlaceholderText="Executable Path" HorizontalAlignment="Stretch" />
+            <Button Click="BrowseExePath_Click"
+                    Grid.Column="1" 
+                    HorizontalAlignment="Left" >
+                <SymbolIcon Symbol="Folder"/>
+            </Button>
+        </Grid>
+    </StackPanel>
+</Page>

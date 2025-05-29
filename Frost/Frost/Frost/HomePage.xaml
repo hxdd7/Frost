@@ -1,0 +1,24 @@
+<Page
+    x:Class="Frost.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls">
+
+    <StackPanel Spacing="20">
+        <controls:RadialGauge 
+            x:Name="radialGauge"
+            Value="120"
+            MinAngle="-150"
+            MaxAngle="150"
+            NeedleWidth="4"
+            NeedleLength="60"
+            ScaleWidth="12"
+            TickSpacing="15"
+            IsInteractive="True"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="200"
+            Height="200" >
+        </controls:RadialGauge>
+    </StackPanel>
+</Page>

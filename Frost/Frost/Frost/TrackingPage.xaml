@@ -1,0 +1,72 @@
+<Page
+    x:Class="Frost.Views.TrackingPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Frost.Views"
+    xmlns:models="using:Frost.Models"
+    xmlns:helpers="using:Frost.Helpers"
+    xmlns:oxy="using:OxyPlot">
+
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="300"/>
+            <!-- Chart Row -->
+            <RowDefinition Height="*"/>
+            <!-- ListView Row -->
+        </Grid.RowDefinitions>
+
+        <Border 
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            CornerRadius="8"
+            Padding="12">
+            <oxy:PlotView x:Name="ChartControl" Model="{x:Bind Model}" />
+        </Border>
+
+        <ListView x:Name="SessionListView" SelectionMode="None">
+            <ListView.Header>
+                <Grid Padding="16,12"
+                  ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="120" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                           Text="Game Id" />
+                    <TextBlock Grid.Column="1"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                           Text="Start Time" />
+                    <TextBlock Grid.Column="2"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                           Text="End Time" />
+                    <TextBlock Grid.Column="3"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                           Text="Seconds" />
+                </Grid>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:GameSession">
+                    <Grid ColumnSpacing="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="120" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{x:Bind GameId, Mode=OneWay}" FontWeight="Bold"/>
+                        <TextBlock Grid.Column="1" Text="{x:Bind StartTime, Mode=OneWay}" />
+                        <TextBlock Grid.Column="2" Text="{x:Bind EndTime, Mode=OneWay}" />
+                        <TextBlock Grid.Column="3" Text="{x:Bind DurationSeconds, Mode=OneWay}" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style BasedOn="{StaticResource DefaultListViewItemStyle}"
+                   TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+    </Grid>
+</Page>
