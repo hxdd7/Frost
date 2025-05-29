@@ -2,23 +2,103 @@
     x:Class="Frost.HomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:CommunityToolkit.WinUI.Controls">
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Frost.ViewModels"
+    mc:Ignorable="d">
 
-    <StackPanel Spacing="20">
-        <controls:RadialGauge 
-            x:Name="radialGauge"
-            Value="120"
-            MinAngle="-150"
-            MaxAngle="150"
-            NeedleWidth="4"
-            NeedleLength="60"
-            ScaleWidth="12"
-            TickSpacing="15"
-            IsInteractive="True"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Width="200"
-            Height="200" >
-        </controls:RadialGauge>
-    </StackPanel>
+    <ScrollViewer Padding="20" VerticalScrollBarVisibility="Auto">
+        <StackPanel Spacing="30">
+
+            <!-- Header -->
+            <TextBlock Text="System Specifications" FontSize="28" FontWeight="Bold" />
+
+            <!-- CPU Usage with RadialGauge -->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="20">
+                <controls:RadialGauge
+                    x:Name="cpuUsageGauge"
+                    Value="{x:Bind ViewModel.CpuUsage, Mode=OneWay}"
+                    MinAngle="-150"
+                    MaxAngle="150"
+                    NeedleWidth="5"
+                    NeedleLength="70"
+                    ScaleWidth="15"
+                    TickSpacing="10"
+                    Width="200"
+                    Height="200"
+                    IsInteractive="False" />
+                <StackPanel VerticalAlignment="Center" Spacing="8">
+                    <TextBlock Text="CPU Usage" FontSize="18" FontWeight="SemiBold" />
+                    <ProgressBar 
+                        Width="200" 
+                        Height="20" 
+                        Minimum="0" Maximum="100" 
+                        Value="{x:Bind ViewModel.CpuUsage, Mode=OneWay}" />
+                    <TextBlock Text="{x:Bind ViewModel.CpuModel}" FontSize="16" />
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Memory Info -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="Memory" FontSize="20" FontWeight="Bold" />
+                <TextBlock Text="{x:Bind ViewModel.MemoryDescription}" FontSize="16" />
+                <ProgressBar 
+                    Width="400" 
+                    Height="20" 
+                    Minimum="0" Maximum="{x:Bind ViewModel.TotalMemory}" 
+                    Value="{x:Bind ViewModel.UsedMemory}" />
+                <TextBlock Text="{x:Bind ViewModel.MemoryUsageText}" FontSize="14" />
+            </StackPanel>
+
+            <!-- Drives Info -->
+            <StackPanel>
+                <ToggleButton x:Name="ToggleExpandDrives" Content="Drive Details" FontWeight="Bold" FontSize="16" />
+                <ContentPresenter
+        Visibility="{Binding IsChecked, ElementName=ToggleExpandDrives, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                    <!-- Put your Drives ListView here -->
+                    <ListView ItemsSource="{x:Bind ViewModel.Drives, Mode=OneWay}" 
+                  SelectionMode="Single"
+                  Width="Auto" Height="300">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="local:DriveInfoModel">
+                                <StackPanel Orientation="Horizontal" Spacing="20">
+                                    <TextBlock Text="{x:Bind Name}" Width="80"/>
+                                    <TextBlock Text="{x:Bind DriveType}" Width="80"/>
+                                    <TextBlock Text="{x:Bind FileSystem}" Width="80"/>
+                                    <TextBlock Text="{x:Bind TotalSizeFormatted}" Width="100"/>
+                                    <TextBlock Text="{x:Bind FreeSpaceFormatted}" Width="100"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ContentPresenter>
+            </StackPanel>
+
+            <!-- Drivers Info -->
+            <StackPanel>
+                <ToggleButton x:Name="ToggleExpandDrivers" Content="Driver Details" FontWeight="Bold" FontSize="16" />
+                <ContentPresenter
+        Visibility="{Binding IsChecked, ElementName=ToggleExpandDrivers, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                    <ListView ItemsSource="{x:Bind ViewModel.Drivers, Mode=OneWay}"
+              SelectionMode="Single"
+              Width="Auto" Height="300">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:DriverInfoModel">
+                            <StackPanel Orientation="Horizontal" Spacing="20">
+                                <TextBlock Text="{x:Bind Name}" Width="180"/>
+                                <TextBlock Text="{x:Bind Version}" Width="100"/>
+                                <TextBlock Text="{x:Bind Provider}" Width="150"/>
+                                <TextBlock Text="{x:Bind Status}" Width="100"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    </ListView>
+                </ContentPresenter>
+            </StackPanel>
+
+        </StackPanel>
+    </ScrollViewer>
 </Page>

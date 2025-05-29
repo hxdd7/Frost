@@ -94,7 +94,7 @@
 
                 <GridView.ItemContainerTransitions>
                     <TransitionCollection>
-                        <EntranceThemeTransition FromVerticalOffset="24"/>
+                        <EntranceThemeTransition FromHorizontalOffset="100" />
                     </TransitionCollection>
                 </GridView.ItemContainerTransitions>
 
@@ -150,17 +150,6 @@
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
-
-            <!-- Loading Spinner Overlay -->
-            <Grid Background="#7F000000"
-                  IsHitTestVisible="False">
-                <ProgressRing
-                    IsActive="True"
-                    Width="60"
-                    Height="60"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"/>
-            </Grid>
         </Grid>
     </Grid>
 </Page>
