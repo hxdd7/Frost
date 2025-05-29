@@ -94,7 +94,7 @@
 
                 <GridView.ItemContainerTransitions>
                     <TransitionCollection>
-                        <EntranceThemeTransition FromHorizontalOffset="100" />
+                        <EntranceThemeTransition FromVerticalOffset="100" />
                     </TransitionCollection>
                 </GridView.ItemContainerTransitions>
 
