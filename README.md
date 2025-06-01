@@ -1,8 +1,8 @@
 # Krew
 
-Frost is a WinUI 3 Windows desktop app designed to help you organise and launch your game library. It supports manually adding games with metadata and pinning your favourites for quick access. The app uses the system’s default theme and focuses on simplicity and usability.
+Krew is a WinUI 3 Windows desktop app designed to help you organise and launch your game library. This app focuses on simplicity and usability.
 
----
+
 
 ## Walkthrough
 
@@ -24,7 +24,7 @@ Frost is a WinUI 3 Windows desktop app designed to help you organise and launch 
 6. **Access Settings:**  
    Open the **Settings** page to adjust app preferences like sound (on/off). The app follows the default Windows themes.
 
----
+
 
 ## Features
 
@@ -34,14 +34,14 @@ Frost is a WinUI 3 Windows desktop app designed to help you organise and launch 
 - Confirmation dialogue before launching games  
 - Context menu for pinned games (launch/unpin)  
 
----
+
 
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](https://github.com/Amiru2007/Frost/blob/main/LICENSE) file for details.
 
----
+
 
 ## Contact
 
-Created and maintained by Amiru2007.
+Created and maintained by [Amiru2007](https://github.com/Amiru2007).
