@@ -35,10 +35,17 @@
         </Grid.Resources>
 
         <tb:TaskbarIcon
-            ToolTipText="Krew"
-            IconSource="/Assets/Frost.ico"
-            MenuActivation="LeftOrRightClick">
+            x:Name="TIcon"
+            IconSource="Assets/Frost.ico"
+            ToolTipText="Frost - running in tray"
+            MenuActivation="RightClick">
 
+            <tb:TaskbarIcon.ContextFlyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem Text="Open Frost" Click="OpenFrost_Click"/>
+                    <MenuFlyoutItem Text="Exit" Click="Exit_Click"/>
+                </MenuFlyout>
+            </tb:TaskbarIcon.ContextFlyout>
         </tb:TaskbarIcon>
 
         <Border x:Name="AppTitleBar" VerticalAlignment="Top" Background="Transparent">

@@ -39,6 +39,9 @@ namespace Frost
         private const uint VK_S = 0x53; // Virtual Key 'S'
         private const int WM_HOTKEY = 0x0312;
 
+        private Window? _trayMenuWindow;
+        private bool _isTrayMenuOpen = false;
+
         [DllImport("user32.dll")]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
@@ -71,7 +74,21 @@ namespace Frost
 
             LoadPinnedGames();
         }
+        private void OpenFrost_Click(object sender, RoutedEventArgs e)
+        {
+            this.Activate();
+            _trayMenuWindow?.Close();
+            _trayMenuWindow = null;
+            _isTrayMenuOpen = false;
+        }
 
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            _trayMenuWindow?.Close();
+            _trayMenuWindow = null;
+            _isTrayMenuOpen = false;
+            Application.Current.Exit();
+        }
         // Commenting out this method temporarily
         /*
         private void RegisterGlobalHotKey()
