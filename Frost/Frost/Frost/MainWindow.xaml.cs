@@ -20,6 +20,7 @@ using System.Drawing;
 using DrawingImage = System.Drawing.Image;
 using DrawingImageFormat = System.Drawing.Imaging.ImageFormat;
 using Windows.UI.Core;
+using Microsoft.UI.Windowing;
 
 namespace Frost
 {
@@ -63,8 +64,10 @@ namespace Frost
             };
 
             ExtendsContentIntoTitleBar = true;
+            //AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
             SetTitleBar(AppTitleBar);
 
+            this.AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
             // Commenting out the window message hook and hotkey registration temporarily to isolate the issue
             // RegisterGlobalHotKey();
             // InitializeMessageHook();

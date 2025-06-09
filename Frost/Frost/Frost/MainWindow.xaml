@@ -50,8 +50,8 @@
 
         <Border x:Name="AppTitleBar" VerticalAlignment="Top" Background="Transparent">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <Image Width="21" Height="20" Source="ms-appx:///Assets/Frost.png" Margin="13,10,11,11"/>
-                <TextBlock x:Name="AppTitle" Text="Krew" VerticalAlignment="Top" Margin="0,12,0,0" FontSize="12"/>
+                <Image Width="18" Height="18" Source="ms-appx:///Assets/Frost.png" Margin="16,16,11,11"/>
+                <TextBlock x:Name="AppTitle" Text="Krew" VerticalAlignment="Top" Margin="0,16,0,0" FontSize="12"/>
             </StackPanel>
         </Border>
 
@@ -84,7 +84,7 @@
             ExpandedModeThresholdWidth="500"
             SelectionFollowsFocus="Disabled"
             IsTabStop="False"
-            Margin="0,40,0,0">
+            Margin="0,48,0,0">
 
             <NavigationView.Resources>
                 <MenuFlyout x:Key="PinnedGameContextMenu">
