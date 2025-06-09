@@ -130,16 +130,17 @@
                     QuerySubmitted="GameSearchBox_QuerySubmitted"
                     SuggestionChosen="GameSearchBox_SuggestionChosen"
                     ToolTipService.ToolTip="Search Games"
-                    PlaceholderText="Search Games"/>
+                    PlaceholderText="Search Games"
+                                Margin="0,-13,0,0"/>
             </NavigationView.AutoSuggestBox>
 
             <Frame x:Name="contentFrame" />
         </NavigationView>
         <ContentDialog
-    x:Name="ScreenshotNotificationDialog"
-    Title="Screenshot"
-    CloseButtonText="OK"
-    DefaultButton="Close">
+            x:Name="ScreenshotNotificationDialog"
+            Title="Screenshot"
+            CloseButtonText="OK"
+            DefaultButton="Close">
             <StackPanel>
                 <TextBlock x:Name="ScreenshotStatusText" />
             </StackPanel>
