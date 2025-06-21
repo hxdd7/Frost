@@ -1,26 +1,74 @@
+using Microsoft.UI.Dispatching;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
 using Frost.Helpers;
 using Frost.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
-using Microsoft.UI.Xaml;
-using OxyPlot.Legends;
+using System.ComponentModel;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.Kernel.Sketches;
+using SkiaSharp;
+using System;
+using LiveChartsCore.SkiaSharpView.Painting;
+using Microsoft.UI.Xaml.Media;
 
 namespace Frost.Views
 {
-    public sealed partial class TrackingPage : Page
+    public sealed partial class TrackingPage : Page, INotifyPropertyChanged
     {
-        public PlotModel Model { get; private set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private ISeries[] _seriesCollection = Array.Empty<ISeries>();
+        public ISeries[] SeriesCollection
+        {
+            get => _seriesCollection;
+            set
+            {
+                _seriesCollection = value;
+                OnPropertyChanged(nameof(SeriesCollection));
+            }
+        }
+
+        private List<ICartesianAxis> _xAxes = new List<ICartesianAxis>();
+        public List<ICartesianAxis> XAxes
+        {
+            get => _xAxes;
+            set
+            {
+                _xAxes = value;
+                OnPropertyChanged(nameof(XAxes));
+            }
+        }
+
+        private List<ICartesianAxis> _yAxes = new List<ICartesianAxis>();
+        public List<ICartesianAxis> YAxes
+        {
+            get => _yAxes;
+            set
+            {
+                _yAxes = value;
+                OnPropertyChanged(nameof(YAxes));
+            }
+        }
 
         public TrackingPage()
         {
             this.InitializeComponent();
+
+            // Initialize to avoid binding nulls
+            SeriesCollection = Array.Empty<ISeries>();
+            XAxes = new List<ICartesianAxis>();
+            YAxes = new List<ICartesianAxis>();
+
             this.Loaded += TrackingPage_Loaded;
+            this.ActualThemeChanged += TrackingPage_ThemeChanged;
+        }
+        private async void TrackingPage_ThemeChanged(FrameworkElement sender, object args)
+        {
+            await LoadSessionsAndChartAsync(); // refresh to reapply theme-based styling
         }
 
         private async void TrackingPage_Loaded(object sender, RoutedEventArgs e)
@@ -28,79 +76,104 @@ namespace Frost.Views
             await LoadSessionsAndChartAsync();
         }
 
+        private SKColor GetAccentTextFillColorPrimary()
+        {
+            var brush = (SolidColorBrush)Application.Current.Resources["AccentTextFillColorPrimaryBrush"];
+            var color = brush.Color; // Windows.UI.Color or Microsoft.UI.Color depending on your namespace
+
+            return new SKColor(color.R, color.G, color.B, color.A);
+        }
+
+        private SKColor GetThemeTextColor()
+        {
+            if (Application.Current.Resources.TryGetValue("TextFillColorPrimaryBrush", out var resource) &&
+                resource is SolidColorBrush brush)
+            {
+                var c = brush.Color;
+                return new SKColor(c.R, c.G, c.B, c.A);
+            }
+
+            return IsDarkTheme() ? SKColors.LightGray : SKColors.Black;
+        }
+
+        private bool IsDarkTheme()
+        {
+            var uiSettings = new Windows.UI.ViewManagement.UISettings();
+            var background = uiSettings.GetColorValue(Windows.UI.ViewManagement.UIColorType.Background);
+            return background.R < 128 && background.G < 128 && background.B < 128;
+        }
+
+        private SKColor GetThemeColor(SKColor lightColor, SKColor darkColor)
+        {
+            return IsDarkTheme() ? darkColor : lightColor;
+        }
+
         private async Task LoadSessionsAndChartAsync()
         {
-            var sessions = await DatabaseHelper.GetAllGameSessionsAsync();
+            var sessions = await Task.Run(() => DatabaseHelper.GetAllGameSessionsAsync());
 
-            // Set ListView ItemsSource
-            SessionListView.ItemsSource = sessions;
-
-            // Group data by date
             var grouped = sessions
                 .GroupBy(s => s.StartTime.Date)
                 .Select(g => new
                 {
                     Date = g.Key,
-                    TotalDurationHours = g.Sum(x => x.DurationSeconds) / 3600.0
+                    TotalDurationMinutes = g.Sum(x => x.DurationSeconds) / 60.0
                 })
                 .OrderBy(d => d.Date)
                 .ToList();
 
-            // Prepare data points
-            var dataPoints = grouped.Select((x, index) => new DataPoint(index, x.TotalDurationHours)).ToList();
-            var labels = grouped.Select(x => x.Date.ToString("MM/dd")).ToList();
+            var values = grouped.Select(g => g.TotalDurationMinutes).ToArray();
+            var labels = grouped.Select(g => g.Date.ToString("MM/dd")).ToList();
 
-            // Create PlotModel
-            Model = new PlotModel { Title = "Play Time" };
-
-            // Configure axes
-            Model.Axes.Add(new CategoryAxis
+            // Now update UI on UI thread:
+            DispatcherQueue.TryEnqueue(() =>
             {
-                Position = AxisPosition.Bottom,
-                Key = "DateAxis",
-                ItemsSource = labels
+                var accentColor = GetAccentTextFillColorPrimary();
+                var axisTextColor = GetThemeTextColor();
+                var isDarkTheme = Application.Current.RequestedTheme == ApplicationTheme.Dark;
+                var labelColor = GetThemeColor(SKColors.Black, SKColors.LightGray);
+                var gridLineColor = GetThemeColor(new SKColor(200, 200, 200), new SKColor(60, 60, 60));
+
+                SeriesCollection = new ISeries[]
+                {
+                    new LineSeries<double>
+                    {
+                        Values = values,
+                        Fill = null,
+                        Stroke = new SolidColorPaint(accentColor, 4),
+                        GeometryStroke = new SolidColorPaint(accentColor, 4),
+                        GeometryFill = new SolidColorPaint(SKColor.Parse("#272727"))
+                    }
+                };
+
+                XAxes = new List<ICartesianAxis>
+                {
+                    new Axis
+                    {
+                        Labels = labels,
+                        LabelsRotation = 0,
+                        Name = "Date",
+                        NamePaint = new SolidColorPaint(new SKColor(128, 128, 128, 255)),
+                        LabelsPaint = new SolidColorPaint(new SKColor(128, 128, 128, 255))
+                    }
+                };
+
+                YAxes = new List<ICartesianAxis>
+                {
+                    new Axis
+                    {
+                        Name = "Minutes Played",
+                        NamePaint = new SolidColorPaint(new SKColor(128, 128, 128, 255)),
+                        LabelsPaint = new SolidColorPaint(new SKColor(128, 128, 128, 255)),
+                        SeparatorsPaint = new SolidColorPaint(new SKColor(128, 128, 128, 50), 1)
+                    }
+                };
+
+                SessionListView.ItemsSource = sessions;
             });
-
-            Model.Axes.Add(new LinearAxis
-            {
-                Position = AxisPosition.Left,
-                Title = "Hours Played"
-            });
-
-            Model.TextColor = OxyColor.Parse("#FF000000"); // Black or use system text brush color
-            Model.PlotAreaBorderColor = OxyColor.Parse("#1E1E1E"); // Lighter border for Fluent
-
-            var lineSeries = new LineSeries
-            {
-                Color = OxyColor.Parse("#0078D7"), // Fluent Blue (SystemAccentColor)
-                MarkerType = MarkerType.Circle,
-                MarkerSize = 4,
-                MarkerFill = OxyColor.Parse("#0078D7"),
-                StrokeThickness = 2,
-                LineStyle = LineStyle.Solid
-            };
-
-            Model.PlotMargins = new OxyThickness(40, 10, 20, 30);
-
-            // Add line series
-            var series = new LineSeries
-            {
-                Title = "Total Duration",
-                ItemsSource = dataPoints,
-                DataFieldX = "X",
-                DataFieldY = "Y",
-                MarkerType = MarkerType.Circle
-            };
-
-            var isDarkTheme = Application.Current.RequestedTheme == ApplicationTheme.Dark;
-
-            Model.TextColor = isDarkTheme ? OxyColors.White : OxyColors.Black;
-            Model.PlotAreaBorderColor = isDarkTheme ? OxyColor.FromRgb(60, 60, 60) : OxyColors.LightGray;
-
-            Model.Series.Add(series);
-
-            // Bind the model to the PlotView
-            ChartControl.Model = Model;
         }
+
+        private void OnPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

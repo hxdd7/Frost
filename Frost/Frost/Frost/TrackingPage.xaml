@@ -4,45 +4,40 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Frost.Views"
     xmlns:models="using:Frost.Models"
-    xmlns:helpers="using:Frost.Helpers"
-    xmlns:oxy="using:OxyPlot">
+    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
 
     <Grid Padding="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="300"/>
-            <!-- Chart Row -->
+            <RowDefinition Height="450"/>
             <RowDefinition Height="*"/>
-            <!-- ListView Row -->
         </Grid.RowDefinitions>
 
-        <Border 
-            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-            CornerRadius="8"
-            Padding="12">
-            <oxy:PlotView x:Name="ChartControl" Model="{x:Bind Model}" />
-        </Border>
+        <!-- Chart -->
+        <lvc:CartesianChart
+            x:Name="ChartControl"
+            Series="{x:Bind SeriesCollection, Mode=OneWay}"
+            XAxes="{x:Bind XAxes, Mode=OneWay}"
+            YAxes="{x:Bind YAxes, Mode=OneWay}"
+            Height="450"
+            Grid.Row="0" />
 
-        <ListView x:Name="SessionListView" SelectionMode="None">
+        <!-- ListView -->
+        <ListView x:Name="SessionListView" Grid.Row="1" SelectionMode="None">
             <ListView.Header>
-                <Grid Padding="16,12"
-                  ColumnSpacing="16">
+                <Grid Padding="16,12" ColumnSpacing="16">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="80" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="120" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                           Text="Game Id" />
-                    <TextBlock Grid.Column="1"
-                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                           Text="Start Time" />
-                    <TextBlock Grid.Column="2"
-                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                           Text="End Time" />
-                    <TextBlock Grid.Column="3"
-                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                           Text="Seconds" />
+                    <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="Game Id" />
+                    <TextBlock Grid.Column="1" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="Start Time" />
+                    <TextBlock Grid.Column="2" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="End Time" />
+                    <TextBlock Grid.Column="3" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="Seconds" />
                 </Grid>
             </ListView.Header>
             <ListView.ItemTemplate>
@@ -62,8 +57,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.ItemContainerStyle>
-                <Style BasedOn="{StaticResource DefaultListViewItemStyle}"
-                   TargetType="ListViewItem">
+                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                 </Style>
             </ListView.ItemContainerStyle>
