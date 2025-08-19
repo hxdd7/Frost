@@ -42,6 +42,15 @@
             <!-- <Button Content="Open Location"
                     Click="OpenLocation_Click"
                     Tag="{Binding ExePath}" /> -->
+            <Button Content="View Full Details"
+                Click="ViewFullDetails_Click"
+                Foreground="{ThemeResource AccentButtonBackground}"
+                Background="Transparent"
+                BorderThickness="0"
+                HorizontalAlignment="Left"
+                FontSize="14"
+                FontWeight="SemiBold"
+                Padding="0" />
 
             <ScrollViewer x:Name="TagsScrollViewer">
                 <muxc:ItemsRepeater x:Name="TagsRepeater"

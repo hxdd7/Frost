@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:tb="using:H.NotifyIcon"
     mc:Ignorable="d"
-    Title="Frost">
+    Title="Krew">
 
     <Window.SystemBackdrop>
         <MicaBackdrop />
@@ -109,13 +109,13 @@
 
                 <NavigationViewItem Content="Third Party Apps" Tag="PluginsPage" x:Name="PluginsPage" ToolTipService.ToolTip="Third Party Apps">
                     <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xECAA;" />
+                        <FontIcon Glyph="&#xE8B2;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItem Content="Tracking" Tag="TrackingPage" x:Name="TrackingPage" ToolTipService.ToolTip="Tracking">
+                <NavigationViewItem Content="Stats" Tag="TrackingPage" x:Name="TrackingPage" ToolTipService.ToolTip="Stats">
                     <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xEB05;" />
+                        <FontIcon Glyph="&#xEAFC;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 

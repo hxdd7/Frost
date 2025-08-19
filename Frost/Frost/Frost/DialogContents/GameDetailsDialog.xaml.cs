@@ -63,6 +63,17 @@ namespace Frost.DialogContents
             GameTags = game.TagList.Where(tag => !string.IsNullOrWhiteSpace(tag)).ToList();
         }
 
+        private void ViewFullDetails_Click(object sender, RoutedEventArgs e)
+        {
+            (this.Parent as ContentDialog)?.Hide();
+
+            if (App.MainWindow is MainWindow mainWindow && SelectedGame != null)
+            {
+                mainWindow.ContentFrame.Navigate(typeof(Frost.GameDetailsPage), SelectedGame);
+            }
+        }
+
+
         //private void OpenLocation_Click(object sender, RoutedEventArgs e)
         //{
         //    if (sender is Button button && button.Tag is string exePath && !string.IsNullOrWhiteSpace(exePath))

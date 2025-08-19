@@ -1,22 +1,23 @@
-using Windows.UI;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System;
+using Frost.DialogContents;
 using Frost.Helpers;
 using Frost.Models;
-using Frost.DialogContents;
+using Frost.Views;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media;
-using System.Collections.Generic;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Media.Imaging;
-using System.IO;
+using Microsoft.UI.Xaml.Navigation;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Windows.UI;
 
 namespace Frost
 {
@@ -342,16 +343,21 @@ namespace Frost
         {
             var selectedGame = (sender as MenuFlyoutItem)?.Tag as Game;
 
-            // Launch the game if its executable path is provided
             if (selectedGame != null && !string.IsNullOrEmpty(selectedGame.ExePath))
             {
                 try
                 {
-                    Process.Start(new ProcessStartInfo
+                    var process = Process.Start(new ProcessStartInfo
                     {
                         FileName = selectedGame.ExePath,
                         UseShellExecute = true
                     });
+
+                    if (process != null)
+                    {
+                        var playtimeWindow = new PlaytimeWindow(selectedGame, process);
+                        playtimeWindow.Activate();
+                    }
                 }
                 catch (Exception ex)
                 {

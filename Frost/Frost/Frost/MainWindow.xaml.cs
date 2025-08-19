@@ -48,6 +48,7 @@ namespace Frost
 
         [DllImport("user32.dll")]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        public Frame ContentFrame => this.contentFrame;
 
         public MainWindow()
         {
@@ -501,5 +502,21 @@ private void ApplySavedPreferences()
                 dialog.ShowAsync();
             }
         }
+
+        private void OpenDebugPlaytimeWindow()
+        {
+            var fakeGame = new Game
+            {
+                Name = "Debug Adventure",
+                Company = "Test Studio",
+                CoverImgUrl = "https://via.placeholder.com/150x200.png?text=Debug+Cover",
+                BackgroundImgUrl = "https://via.placeholder.com/600x300.png?text=Debug+Background",
+                IconUrl = "https://via.placeholder.com/64.png?text=DBG"
+            };
+
+            var debugWindow = new Frost.Views.PlaytimeWindow(fakeGame);
+            debugWindow.Activate();
+        }
+
     }
 }

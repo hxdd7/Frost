@@ -15,6 +15,13 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <TextBlock
+                 Text="Stats"
+                 FontSize="28"
+                 FontWeight="SemiBold"
+                 TextTrimming="CharacterEllipsis"
+                 Margin="16,4,0,0"/>
+
         <!-- Chart -->
         <lvc:CartesianChart
             x:Name="ChartControl"

@@ -1,0 +1,68 @@
+<Page
+    x:Class="Frost.GameDetailsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Frost"
+    xmlns:models="using:Frost.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <!-- Background Image -->
+        <Image Source="{x:Bind Game.BackgroundImgUrl, Mode=OneWay}" 
+               Stretch="UniformToFill"
+               HorizontalAlignment="Stretch"
+               VerticalAlignment="Top"
+               Opacity="0.5"
+               Height="500"
+               IsHitTestVisible="False" />
+
+        <!-- Foreground content -->
+        <ScrollViewer Margin="50">
+            <StackPanel Padding="20" Spacing="20">
+                <!-- Top section: Cover + Title -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Cover image -->
+                    <Border Width="90" Height="120" CornerRadius="8" Margin="0,0,30,0">
+                        <Image
+                            Source="{x:Bind Game.CoverImgUrl}"
+                            Width="90"
+                            Height="120"
+                            Grid.Column="0" 
+                            Stretch="Fill"/>
+                    </Border>
+                    <!-- Game title and company -->
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="0">
+                        <TextBlock Text="{x:Bind Game.Name}" 
+                                   FontSize="38" 
+                                   FontWeight="SemiBold" 
+                                   TextWrapping="NoWrap"/>
+                        <TextBlock Text="{x:Bind Game.Company}" 
+                                   FontSize="16" 
+                                   Foreground="Gray" 
+                                   TextWrapping="NoWrap"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Bottom section: Other details -->
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Install Size:" FontWeight="SemiBold"/>
+                    <TextBlock Text="{x:Bind Game.InstallSizeFormatted}" />
+
+                    <TextBlock Text="Installed On:" FontWeight="SemiBold"/>
+                    <TextBlock Text="{x:Bind Game.InstallDrive}" />
+
+                    <TextBlock Text="Executable Path:" FontWeight="SemiBold"/>
+                    <TextBlock Text="{x:Bind Game.ExePath}" TextWrapping="Wrap" />
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
