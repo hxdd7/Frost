@@ -1,9 +1,10 @@
-﻿using SQLite;
+﻿using Frost.Models;
+using SQLite;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-using Frost.Models;
-using System;
 using Windows.Storage;
 
 namespace Frost.Helpers
@@ -23,6 +24,8 @@ namespace Frost.Helpers
             await db.CreateTableAsync<Game>();
             await db.CreateTableAsync<Plugin>();
             await db.CreateTableAsync<GameSession>();
+            await db.CreateTableAsync<Category>();
+            await db.CreateTableAsync<CategoryGame>();
         }
 
         public static async Task<List<Game>> GetAllGamesAsync()
@@ -217,6 +220,61 @@ namespace Frost.Helpers
             return await db.Table<GameSession>()
                            .OrderByDescending(s => s.StartTime)
                            .ToListAsync();
+        }
+
+        public static async Task<List<Category>> GetCategoriesAsync()
+        {
+            await InitializeDatabase();
+            return await db.Table<Category>()
+                           .OrderBy(c => c.Name)
+                           .ToListAsync();
+        }
+
+        public static async Task<Category> GetOrCreateCategoryByNameAsync(string name)
+        {
+            await InitializeDatabase();
+            string trimmed = (name ?? string.Empty).Trim();
+            if (string.IsNullOrEmpty(trimmed)) return null;
+
+            // Try get (case-insensitive)
+            var all = await db.Table<Category>().ToListAsync();
+            var found = all.FirstOrDefault(c => string.Equals(c.Name, trimmed, StringComparison.OrdinalIgnoreCase));
+            if (found != null) return found;
+
+            var newCat = new Category { Name = trimmed };
+            await db.InsertAsync(newCat);
+            return newCat;
+        }
+
+        public static async Task<bool> IsGameInCategoryAsync(int categoryId, int gameId)
+        {
+            await InitializeDatabase();
+            var existing = await db.Table<CategoryGame>()
+                                   .Where(x => x.CategoryId == categoryId && x.GameId == gameId)
+                                   .FirstOrDefaultAsync();
+            return existing != null;
+        }
+
+        public static async Task AddGameToCategoryAsync(int categoryId, int gameId)
+        {
+            await InitializeDatabase();
+            if (!await IsGameInCategoryAsync(categoryId, gameId))
+            {
+                await db.InsertAsync(new CategoryGame
+                {
+                    CategoryId = categoryId,
+                    GameId = gameId
+                });
+            }
+        }
+        public static async Task RemoveGameFromCategoryAsync(int categoryId, int gameId)
+        {
+            await InitializeDatabase();
+            var item = await db.Table<CategoryGame>()
+                               .Where(x => x.CategoryId == categoryId && x.GameId == gameId)
+                               .FirstOrDefaultAsync();
+            if (item != null)
+                await db.DeleteAsync(item);
         }
 
         #endregion

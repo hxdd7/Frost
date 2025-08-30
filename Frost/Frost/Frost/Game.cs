@@ -21,6 +21,8 @@ namespace Frost.Models
 
         public bool IsPinned { get; set; }
 
+        public int? CategoryId { get; set; }  // Foreign Key to Category (nullable in case it's not assigned)
+
         public string Tags { get; set; }
 
         public long InstallSizeBytes { get; set; }

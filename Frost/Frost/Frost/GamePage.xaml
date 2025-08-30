@@ -5,7 +5,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="using:Frost.Models"
-    xmlns:helpers="using:Frost.Helpers"
     xmlns:converters="using:Frost.Converters"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
@@ -13,12 +12,16 @@
     <Page.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
+        <!-- Shared Context Menu -->
         <MenuFlyout x:Key="GameContextMenuFlyout">
             <MenuFlyoutItem Text="Edit" Icon="Edit" Click="EditGameContextMenu_Click" />
             <MenuFlyoutItem Text="Delete" Icon="Delete" Click="DeleteGameContextMenu_Click" />
             <MenuFlyoutItem Text="Launch" Icon="Play" Click="LaunchGameContextMenu_Click" />
             <MenuFlyoutItem x:Name="PinMenuItem" Text="Pin to Sidebar" Icon="Pin" Click="PinGameContextMenu_Click" />
             <MenuFlyoutItem x:Name="UnpinMenuItem" Text="Unpin from Sidebar" Icon="Unpin" Click="UnpinGameContextMenu_Click" />
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem Text="Add to Category" Icon="Tag"
+                Tag="{Binding}" Click="AddToCategoryContextMenu_Click" />
         </MenuFlyout>
     </Page.Resources>
 
@@ -78,9 +81,8 @@
             </CommandBar>
         </Grid>
 
-        <!-- Content and Loading Overlay -->
+        <!-- Content -->
         <Grid Grid.Row="1">
-            <!-- Game List -->
             <GridView
                 x:Name="ContentGridView"
                 ItemsSource="{x:Bind Games, Mode=OneWay}"

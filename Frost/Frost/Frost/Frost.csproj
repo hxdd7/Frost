@@ -12,6 +12,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="DialogContents\AddToCategoryDialog.xaml" />
     <None Remove="GameDetailsPage.xaml" />
     <None Remove="PlaytimeWindow.xaml" />
   </ItemGroup>
@@ -69,6 +70,9 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GamePage - Copy.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="SettingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -118,6 +122,12 @@
 
   <ItemGroup>
     <Folder Include="Themes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="DialogContents\AddToCategoryDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

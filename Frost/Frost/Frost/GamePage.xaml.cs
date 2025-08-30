@@ -200,6 +200,30 @@ namespace Frost
             await dialog.ShowAsync();
         }
 
+        private async void AddToCategoryContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedGame = (sender as MenuFlyoutItem)?.Tag as Game;
+            if (selectedGame == null) return;
+
+            var dialogContent = new AddToCategoryDialog(selectedGame.Id);
+
+            var dialog = new ContentDialog
+            {
+                XamlRoot = this.XamlRoot,
+                Title = "Add Game to Categories",
+                Content = dialogContent,
+                PrimaryButtonText = "Save",
+                CloseButtonText = "Cancel",
+                DefaultButton = ContentDialogButton.Primary
+            };
+
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                await dialogContent.SaveSelectedCategoriesAsync();
+            }
+        }
+
         private ObservableCollection<Game> GetSelectedGames()
         {
             return new ObservableCollection<Game>(Games.Where(game => game.IsSelected));
