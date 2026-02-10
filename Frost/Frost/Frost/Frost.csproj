@@ -15,6 +15,7 @@
     <None Remove="DialogContents\AddToCategoryDialog.xaml" />
     <None Remove="GameDetailsPage.xaml" />
     <None Remove="PlaytimeWindow.xaml" />
+    <None Remove="SystemInfoPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +49,8 @@
     <PackageReference Include="SkiaSharp.Views" Version="3.116.1" />
     <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.4" />
+    <PackageReference Include="Vortice.Direct3D11" Version="3.8.2" />
+    <PackageReference Include="Vortice.DXGI" Version="3.8.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -122,6 +125,12 @@
 
   <ItemGroup>
     <Folder Include="Themes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="SystemInfoPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

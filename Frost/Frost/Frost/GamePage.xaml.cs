@@ -80,6 +80,8 @@ namespace Frost
 
             PopulateGenreFilter();
             PopulateDriveFilterMenu();
+
+            UpdateEmptyState();
         }
 
         public static Visibility ReverseVisibility(Visibility visibility)
@@ -427,6 +429,7 @@ namespace Frost
 
             // Refresh the GridView
             ContentGridView.ItemsSource = Games;
+            UpdateEmptyState();
         }
 
         private async void PinGameContextMenu_Click(object sender, RoutedEventArgs e)
@@ -553,6 +556,7 @@ namespace Frost
                 .ToList();
 
             ContentGridView.ItemsSource = filteredGames;
+            UpdateEmptyState();
         }
 
         private async void ContentGridView_ItemClick(object sender, ItemClickEventArgs e)
@@ -635,28 +639,29 @@ namespace Frost
         }
 
         private string _selectedDriveFilter = "All";
-
         private void DriveFilterToggleItem_Click(object sender, RoutedEventArgs e)
         {
             if (sender is ToggleMenuFlyoutItem selectedItem)
             {
                 _selectedDriveFilter = selectedItem.Tag?.ToString() ?? "All";
 
-                // Ensure only one is checked
                 foreach (var item in DriveFilterFlyout.Items.OfType<ToggleMenuFlyoutItem>())
                 {
                     item.IsChecked = false;
                 }
                 selectedItem.IsChecked = true;
 
-                // Apply filtering
+                Games.Clear();
+
+                IEnumerable<Game> filteredGames;
+
                 if (_selectedDriveFilter == "All")
                 {
-                    ContentGridView.ItemsSource = Games;
+                    filteredGames = games;
                 }
                 else
                 {
-                    var filtered = Games.Where(game =>
+                    filteredGames = games.Where(game =>
                     {
                         try
                         {
@@ -667,11 +672,26 @@ namespace Frost
                         {
                             return false;
                         }
-                    }).ToList();
-
-                    ContentGridView.ItemsSource = filtered;
+                    });
                 }
+
+                foreach (var game in filteredGames)
+                {
+                    Games.Add(game);
+                }
+
+                ContentGridView.ItemsSource = Games;
+                UpdateEmptyState();
             }
+        }
+
+
+        private void UpdateEmptyState()
+        {
+            EmptyPlaceholder.Visibility =
+                Games == null || Games.Count == 0
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
         }
     }
 }

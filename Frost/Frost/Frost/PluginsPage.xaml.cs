@@ -28,6 +28,9 @@ namespace Frost
 
             // Apply default sorting (Alphabetically A-Z)
             SortPlugins("Alphabetically_AZ");
+
+            // EMPTY STATE UPDATE (ADDED)
+            UpdateEmptyState();
         }
 
         private async Task LoadPluginsAsync()
@@ -36,12 +39,14 @@ namespace Frost
             Plugins.Clear();
             foreach (var plugin in plugins)
             {
-                plugin.IsSelected = false; // Ensure IsSelected is false on page load
+                plugin.IsSelected = false;
                 Plugins.Add(plugin);
             }
 
-            // Update GridView binding
             ContentGridView.ItemsSource = Plugins;
+
+            // EMPTY STATE UPDATE (ADDED)
+            UpdateEmptyState();
         }
 
         private async void OpenAddPluginDialog_Click(object sender, RoutedEventArgs e)
@@ -70,8 +75,8 @@ namespace Frost
                     ExePath = dialogContent.ExePath
                 };
 
-                // Add newPlugin to your database or collection
                 await DatabaseHelper.AddPluginAsync(newPlugin);
+                await LoadPluginsAsync(); // refresh list
             }
         }
 
@@ -87,7 +92,7 @@ namespace Frost
                     XamlRoot = this.XamlRoot,
                     Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
                     Title = "Confirm Deletion",
-                    Content = new DeletePluginConfirmationDialogContent(), // Use the new DeletePluginConfirmationDialogContent for plugin
+                    Content = new DeletePluginConfirmationDialogContent(),
                     PrimaryButtonText = "Delete",
                     CloseButtonText = "Cancel"
                 };
@@ -95,7 +100,6 @@ namespace Frost
                 var result = await confirmDialog.ShowAsync();
                 if (result == ContentDialogResult.Primary)
                 {
-                    // Proceed to delete the selected plugin
                     await DatabaseHelper.DeletePluginAsync(selectedPlugin);
                     await LoadPluginsAsync();
                 }
@@ -123,7 +127,7 @@ namespace Frost
 
         private void ContentGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Handle selection change if needed
+            // No change
         }
 
         private void ContentGridView_ItemClick(object sender, ItemClickEventArgs e)
@@ -156,6 +160,7 @@ namespace Frost
                 }
             }
         }
+
         private async void EditPluginContextMenu_Click(object sender, RoutedEventArgs e)
         {
             var menuFlyoutItem = sender as MenuFlyoutItem;
@@ -186,7 +191,6 @@ namespace Frost
 
                 if (result == ContentDialogResult.Primary)
                 {
-                    // Update the plugin details
                     selectedPlugin.Name = dialogContent.PluginName;
                     selectedPlugin.Developer = dialogContent.DeveloperName;
                     selectedPlugin.IconUrl = dialogContent.IconImgUrl;
@@ -247,7 +251,18 @@ namespace Frost
                     Plugins = new ObservableCollection<Plugin>(Plugins.OrderBy(p => p.Id));
                     break;
             }
+
             ContentGridView.ItemsSource = Plugins;
+
+            // EMPTY STATE UPDATE (ADDED)
+            UpdateEmptyState();
+        }
+
+        // EMPTY STATE HANDLER (ADDED)
+        private void UpdateEmptyState()
+        {
+            EmptyPlaceholder.Visibility =
+                Plugins.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }

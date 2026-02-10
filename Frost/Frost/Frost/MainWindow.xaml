@@ -109,7 +109,7 @@
 
                 <NavigationViewItem Content="Third Party Apps" Tag="PluginsPage" x:Name="PluginsPage" ToolTipService.ToolTip="Third Party Apps">
                     <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE8B2;" />
+                        <FontIcon Glyph="&#xE74C;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
@@ -118,7 +118,15 @@
                         <FontIcon Glyph="&#xEAFC;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-
+                
+                <NavigationViewItem Content="System Info"
+                    Tag="SystemInfoPage"
+                    ToolTipService.ToolTip="System Information">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE7F8;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                
                 <NavigationViewItemHeader x:Name="PinnedGamesHeader" Content="Games" />
             </NavigationView.MenuItems>
 

@@ -83,7 +83,7 @@
 
                             <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="42,0,0,0">
                                 <TextBlock Text="Krew" FontSize="14"/>
-                                <TextBlock Text="© 2025 Amiru Weerathunga. All rights reserved." FontSize="12" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                                <TextBlock Text="© 2026 Amiru Weerathunga. All rights reserved." FontSize="12" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
