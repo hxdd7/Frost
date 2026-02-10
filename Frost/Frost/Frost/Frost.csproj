@@ -15,7 +15,6 @@
     <None Remove="DialogContents\AddToCategoryDialog.xaml" />
     <None Remove="GameDetailsPage.xaml" />
     <None Remove="PlaytimeWindow.xaml" />
-    <None Remove="SystemInfoPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -125,12 +124,6 @@
 
   <ItemGroup>
     <Folder Include="Themes\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="SystemInfoPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
 
   <ItemGroup>

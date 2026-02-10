@@ -205,7 +205,6 @@ private void ApplySavedPreferences()
                     "GamePage" => typeof(GamePage),
                     "PluginsPage" => typeof(PluginsPage),
                     "TrackingPage" => typeof(Views.TrackingPage),
-                    "SystemInfoPage" => typeof(Pages.SystemInfoPage),
                     _ => null,
                 };
 
