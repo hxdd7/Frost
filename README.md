@@ -38,10 +38,10 @@ Krew is a WinUI 3 Windows desktop app designed to help you organise and launch y
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/Amiru2007/Frost/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/hxdd7/Frost/blob/main/LICENSE) file for details.
 
 
 
 ## Contact
 
-Created and maintained by [Amiru2007](https://github.com/Amiru2007).
+Created and maintained by [Hexedd7](https://github.com/hxdd7).
